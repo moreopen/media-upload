@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.moreopen.media.upload.exception.FileDownloadException;
+import com.moreopen.media.upload.request.MultipartAwaredUploadRequest;
 import com.moreopen.media.upload.response.BaseResponse;
 import com.moreopen.media.upload.service.FileUploadService;
 import com.moreopen.media.upload.utils.Constants;
@@ -46,6 +47,7 @@ public class UploadController {
 		MultipartFile multipartFile = mrequest.getFile("media");
 		if (multipartFile == null) {
 			logger.error("upload file can't be null");
+			response.getWriter().write(new BaseResponse(BaseResponse.INVALID_INPUT, "upload file can't be null").toJson());
 			return;
 		} else {
 			if (logger.isDebugEnabled()) {
@@ -57,7 +59,7 @@ public class UploadController {
 				);
 			}
 		}
-		BaseResponse result = fileUploadService.save(multipartFile);
+		BaseResponse result = fileUploadService.save(new MultipartAwaredUploadRequest(user, multipartFile));
 		response.getWriter().write(result.toJson());
 	}
 	

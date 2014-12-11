@@ -8,6 +8,8 @@ public class BaseResponse extends Payload {
 	
 	public static final String DOWNLOAD_FAILED = "-2";
 	
+	public static final String INVALID_INPUT = "-3";
+	
 	public static final BaseResponse UNFORMATTED = new BaseResponse("401", "un-formatted input"); 
 	
 	public static final BaseResponse SERVER_ERROR = new BaseResponse("500", "server internal error");

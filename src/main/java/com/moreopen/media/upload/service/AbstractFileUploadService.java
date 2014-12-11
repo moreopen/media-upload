@@ -1,6 +1,7 @@
 package com.moreopen.media.upload.service;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Calendar;
 
 import org.apache.commons.lang.RandomStringUtils;
@@ -9,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.moreopen.media.upload.exception.FileUploadException;
+import com.moreopen.media.upload.request.MultipartAwaredUploadRequest;
 import com.moreopen.media.upload.response.BaseResponse;
 import com.moreopen.media.upload.utils.Constants;
 
@@ -19,7 +21,8 @@ public abstract class AbstractFileUploadService implements FileUploadService {
 	protected abstract BaseResponse buildResponse(String fileName) throws Exception;
 
 	@Override
-	public BaseResponse save(MultipartFile multipartFile) throws FileUploadException {
+	public BaseResponse save(MultipartAwaredUploadRequest multipartAwaredUploadRequest) throws FileUploadException, IOException {
+		MultipartFile multipartFile = multipartAwaredUploadRequest.getMultipartFile();
 		//XXX TODO md5 check, if has exist the file with the same md5 value, just return the url, not do save 
 		String path = generateSavedPath();
 		File fileDir = new File(path);
@@ -68,7 +71,7 @@ public abstract class AbstractFileUploadService implements FileUploadService {
 		return fileName;
 	}
 
-	private String generateSavedPath() {
+	protected String generateSavedPath() {
 		Calendar calendar = Calendar.getInstance();
 		return Constants.UPLOAD_TOP_DIR + "/" + calendar.get(Calendar.YEAR) + "/"
 				+ (calendar.get(Calendar.MONTH) + 1) + "/"
