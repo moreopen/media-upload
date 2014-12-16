@@ -141,7 +141,7 @@ public class UploadController {
 			}
 			if (left > 0) {
 				byte[] bytes = new byte[left];
-				raf.seek(start + bufferSize * spanSize);
+				raf.seek(start);
 				int len = raf.read(bytes, 0, left);
 				response.getOutputStream().write(bytes, 0, len);
 			}
